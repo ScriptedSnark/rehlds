@@ -510,10 +510,6 @@ void EXT_FUNC CGameClient::SetSentNewResponse(bool state)
 	m_pClient->m_bSentNewResponse = state ? TRUE : FALSE;
 }
 
-const char* EXT_FUNC CGameClient::GetGame() {
-	return m_pClient->m_sock < NS_EXTRA ? com_gamedir : extra_games[m_pClient->m_sock - NS_EXTRA];
-}
-
 CNetChan::CNetChan(netchan_t* chan)
 {
 	m_pNetChan = chan;
@@ -867,41 +863,6 @@ sizebuf_t *EXT_FUNC CRehldsServerData::GetSpectatorBuf()
 sizebuf_t *EXT_FUNC CRehldsServerData::GetSignonBuf()
 {
 	return &g_psv.signon;
-}
-
-void EXT_FUNC CRehldsServerData::SetGameType(GameType_e gameType) {
-	g_eGameType = gameType;
-}
-
-delta_t** EXT_FUNC CRehldsServerData::GetDeltaPtr(const char * deltaName) {
-	if(Q_strcmp("entity_state_player_t", deltaName) == 0)
-		return &g_pplayerdelta;
-
-	if(Q_strcmp("entity_state_t", deltaName) == 0)
-		return &g_pentitydelta;
-
-	if(Q_strcmp("custom_entity_state_t", deltaName) == 0)
-		return &g_pcustomentitydelta;
-
-	if(Q_strcmp("clientdata_t", deltaName) == 0)
-		return &g_pclientdelta;
-
-	if(Q_strcmp("weapon_data_t", deltaName) == 0)
-		return &g_pweapondelta;
-
-	if(Q_strcmp("event_t", deltaName) == 0)
-		return &g_peventdelta;
-
-#ifdef REHLDS_OPT_PEDANTIC
-	if(Q_strcmp("usercmd_t", deltaName) == 0)
-		return &g_pusercmddelta;
-#endif
-
-	return NULL;
-}
-
-delta_info_t* EXT_FUNC CRehldsServerData::GetDeltaInfoChain() {
-	return g_sv_delta;
 }
 
 void Rehlds_Interfaces_FreeClients()

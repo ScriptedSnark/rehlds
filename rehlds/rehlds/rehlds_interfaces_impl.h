@@ -256,7 +256,6 @@ public:
 
 	virtual bool IsSentNewResponse();
 	virtual void SetSentNewResponse(bool state);
-	virtual const char* GetGame();
 
 public:
 	bool GetSpawnedOnce() const { return m_bSpawnedOnce; }
@@ -349,9 +348,6 @@ public:
 	virtual sizebuf_t *GetMulticastBuf();
 	virtual sizebuf_t *GetSpectatorBuf();
 	virtual sizebuf_t *GetSignonBuf();
-	virtual void SetGameType(GameType_e gameType);
-	virtual delta_t** GetDeltaPtr(const char* deltaName);
-	virtual delta_info_t* GetDeltaInfoChain();
 };
 
 extern CGameClient** g_GameClients;

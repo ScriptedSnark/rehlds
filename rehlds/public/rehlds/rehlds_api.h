@@ -140,10 +140,6 @@ typedef IVoidHookChainRegistry<edict_t *> IRehldsHookRegistry_PF_Remove_I;
 typedef IVoidHookChain<edict_t *, int, const char *, float, float, int, int, int, int, const float *, edict_t *> IRehldsHook_PF_BuildSoundMsg_I;
 typedef IVoidHookChainRegistry<edict_t *, int, const char *, float, float, int, int, int, int, const float *, edict_t *> IRehldsHookRegistry_PF_BuildSoundMsg_I;
 
-//MapSoundIndex hook
-typedef IHookChain<int, int> IRehldsHook_MapSoundIndex;
-typedef IHookChainRegistry<int, int> IRehldsHookRegistry_MapSoundIndex;
-
 //SV_WriteFullClientUpdate hook
 typedef IVoidHookChain<IGameClient *, char *, size_t, sizebuf_t *, IGameClient *> IRehldsHook_SV_WriteFullClientUpdate;
 typedef IVoidHookChainRegistry<IGameClient *, char *, size_t, sizebuf_t *, IGameClient *> IRehldsHookRegistry_SV_WriteFullClientUpdate;
@@ -155,10 +151,6 @@ typedef IHookChainRegistry<bool, IGameClient *, resource_t *, uint32> IRehldsHoo
 //SV_DropClient hook
 typedef IVoidHookChain<IGameClient*, bool, const char*> IRehldsHook_SV_DropClient;
 typedef IVoidHookChainRegistry<IGameClient*, bool, const char*> IRehldsHookRegistry_SV_DropClient;
-
-//SV_LoadEntities hook
-typedef IVoidHookChain<> IRehldsHook_SV_LoadEntities;
-typedef IVoidHookChainRegistry<> IRehldsHookRegistry_SV_LoadEntities;
 
 //SV_ActivateServer hook
 typedef IVoidHookChain<int> IRehldsHook_SV_ActivateServer;
@@ -272,18 +264,6 @@ typedef IHookChainRegistry<bool, edict_t*, edict_t*> IRehldsHookRegistry_SV_Allo
 typedef IVoidHookChain<sizebuf_t *> IRehldsHook_SV_SendResources;
 typedef IVoidHookChainRegistry<sizebuf_t *> IRehldsHookRegistry_SV_SendResources;
 
-//SV_SendUserReg hook
-typedef IVoidHookChain<sizebuf_t*> IRehldsHook_SV_SendUserReg;
-typedef IVoidHookChainRegistry<sizebuf_t*> IRehldsHookRegistry_SV_SendUserReg;
-
-//SV_WriteBaselineMessage hook
-typedef IVoidHookChain<> IRehldsHook_SV_WriteBaselineMessage;
-typedef IVoidHookChainRegistry<> IRehldsHookRegistry_SV_WriteBaselineMessage;
-
-//SV_SendClientDatagram hook
-typedef IHookChain<qboolean, IGameClient*> IRehldsHook_SV_SendClientDatagram;
-typedef IHookChainRegistry<qboolean, IGameClient*> IRehldsHookRegistry_SV_SendClientDatagram;
-
 class IRehldsHookchains {
 public:
 	virtual ~IRehldsHookchains() { }
@@ -313,11 +293,9 @@ public:
 	virtual IRehldsHookRegistry_SV_StartSound* SV_StartSound() = 0;
 	virtual IRehldsHookRegistry_PF_Remove_I* PF_Remove_I() = 0;
 	virtual IRehldsHookRegistry_PF_BuildSoundMsg_I* PF_BuildSoundMsg_I() = 0;
-	virtual IRehldsHookRegistry_MapSoundIndex* MapSoundIndex() = 0;
 	virtual IRehldsHookRegistry_SV_WriteFullClientUpdate* SV_WriteFullClientUpdate() = 0;
 	virtual IRehldsHookRegistry_SV_CheckConsistencyResponse* SV_CheckConsistencyResponse() = 0;
 	virtual IRehldsHookRegistry_SV_DropClient* SV_DropClient() = 0;
-	virtual IRehldsHookRegistry_SV_LoadEntities* SV_LoadEntities() = 0;
 	virtual IRehldsHookRegistry_SV_ActivateServer* SV_ActivateServer() = 0;
 	virtual IRehldsHookRegistry_SV_WriteVoiceCodec* SV_WriteVoiceCodec() = 0;
 	virtual IRehldsHookRegistry_Steam_GSGetSteamID* Steam_GSGetSteamID() = 0;
@@ -346,9 +324,6 @@ public:
 	virtual IRehldsHookRegistry_SV_ClientPrintf* SV_ClientPrintf() = 0;
 	virtual IRehldsHookRegistry_SV_AllowPhysent* SV_AllowPhysent() = 0;
 	virtual IRehldsHookRegistry_SV_SendResources* SV_SendResources() = 0;
-	virtual IRehldsHookRegistry_SV_SendUserReg* SV_SendUserReg() = 0;
-	virtual IRehldsHookRegistry_SV_WriteBaselineMessage* SV_WriteBaselineMessage() = 0;
-	virtual IRehldsHookRegistry_SV_SendClientDatagram* SV_SendClientDatagram() = 0;
 };
 
 struct RehldsFuncs_t {
@@ -406,9 +381,7 @@ struct RehldsFuncs_t {
 	void(*AddCvarListener)(const char *var_name, cvar_callback_t func);
 	void(*RemoveExtDll)(void *hModule);
 	void(*RemoveCvarListener)(const char *var_name, cvar_callback_t func);
-	void*(*GetExtDll)(int iExtDll);
 	ENTITYINIT(*GetEntityInit)(char *pszClassName);
-	void(*SV_StudioSetupBones)(struct model_s* pModel, float frame, int sequence, const vec_t* angles, const vec_t* origin, const unsigned char* pcontroller, const unsigned char* pblending, int iBone, const edict_t* edict);
 
 	// Read functions
 	int(*MSG_ReadChar)();
@@ -464,9 +437,6 @@ struct RehldsFuncs_t {
 
 	// Pause
 	void(*SetServerPause)(bool status);
-
-	// Delta functions
-	qboolean(*DELTA_Load)(char* name, struct delta_s** ppdesc, char* pszFile);
 };
 
 class IRehldsApi {
