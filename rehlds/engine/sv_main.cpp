@@ -805,12 +805,8 @@ qboolean SV_BuildSoundMsg(edict_t *entity, int channel, const char *sample, int 
 	return TRUE;
 }
 
-int MapSoundIndex_internal(int sound_num) {
-	return sound_num;
-}
-
 int MapSoundIndex(int sound_num) {
-	return g_RehldsHookchains.m_MapSoundIndex.callChain(MapSoundIndex_internal, sound_num);
+	return sound_num;
 }
 
 int SV_HashString(const char *string, int iBounds)
@@ -1511,11 +1507,7 @@ void SV_WriteSpawn(sizebuf_t *msg)
 	NotifyDedicatedServerUI("UpdatePlayers");
 }
 
-void SV_SendUserReg(sizebuf_t *msg) {
-	g_RehldsHookchains.m_SV_SendUserReg.callChain(SV_SendUserReg_internal, msg);
-}
-
-void EXT_FUNC SV_SendUserReg_internal(sizebuf_t *msg)
+void SV_SendUserReg(sizebuf_t *msg)
 {
 	for (UserMsg *pMsg = sv_gpNewUserMsgs; pMsg; pMsg = pMsg->next)
 	{
@@ -5026,15 +5018,7 @@ void SV_CleanupEnts(void)
 	}
 }
 
-qboolean EXT_FUNC SV_SendClientDatagram_hook(IGameClient* cl) {
-	return SV_SendClientDatagram_internal(cl->GetClient());
-}
-
-qboolean SV_SendClientDatagram(client_t* client) {
-	return g_RehldsHookchains.m_SV_SendClientDatagram.callChain(SV_SendClientDatagram_hook, GetRehldsApiClient(client));
-}
-
-qboolean SV_SendClientDatagram_internal(client_t *client)
+qboolean SV_SendClientDatagram(client_t *client)
 {
 	unsigned char buf[MAX_DATAGRAM];
 	sizebuf_t msg;
@@ -5925,10 +5909,6 @@ void SV_CreateBaseline(void)
 }
 
 void SV_WriteBaselineMessage() {
-	g_RehldsHookchains.m_SV_WriteBaselineMessage.callChain(SV_WriteBaselineMessage_internal);
-}
-
-void SV_WriteBaselineMessage_internal() {
 	edict_t* svent;
 	int entnum;
 	qboolean custom;
@@ -6574,12 +6554,7 @@ int SV_SpawnServer(qboolean bIsDemo, char *server, char *startspot)
 	return 1;
 }
 
-
-void SV_LoadEntities() {
-	g_RehldsHookchains.m_SV_LoadEntities.callChain(SV_LoadEntities_internal);
-}
-
-void SV_LoadEntities_internal(void)
+void SV_LoadEntities(void)
 {
 #ifdef REHLDS_FIXES
 	if (sv_use_entity_file.value > 0.0f)
