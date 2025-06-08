@@ -60,11 +60,7 @@ int build_number(void)
 		b += 1;
 	}
 
-#ifdef REHLDS_FIXES
-	b -= 41374; // return days since initial commit on Apr 12 2014 (Happy Cosmonautics Day!)
-#else // REHLDS_FIXES
 	b -= 34995; // return days since Oct 24 1996
-#endif // REHLDS_FIXES
 
 	return b;
 }
